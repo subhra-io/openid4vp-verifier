@@ -1,14 +1,23 @@
-// server.js
 import express from 'express';
+import dotenv from 'dotenv';
+import authorizeRouter from './src/routes/authorize.js';
+import callbackRouter from './src/routes/callback.js';
 import wellKnownRoutes from './src/routes/wellKnown.js';
+
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
-// Middleware and other route handlers
-app.use('/.well-known', wellKnownRoutes);
+// Middleware for parsing JSON bodies
+app.use(express.json());
 
-// Define the root route
+// Define your routes
+app.use('/authorize', authorizeRouter); // Authorization route
+app.use('/callback', callbackRouter);   // Callback route
+app.use('/.well-known', wellKnownRoutes); // Well-known route
+
+// Define the root route (for testing purposes)
 app.get('/', (req, res) => {
   res.send('Welcome to the OpenID4VP Verifier!');
 });
