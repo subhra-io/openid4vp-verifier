@@ -8,7 +8,15 @@
     ],
     "routes": [
       {
-        "src": "/(.*)",
+        "src": "/authorize",
+        "dest": "/server.js"
+      },
+      {
+        "src": "/credentials",
+        "dest": "/server.js"
+      },
+      {
+        "src": "/token",
         "dest": "/server.js"
       }
     ]
