@@ -3,7 +3,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.get('/', (req, res) => {
   const { vp_token, state } = req.body;
 
   // Log the response (simulate validation)
