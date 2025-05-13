@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';  // Assuming you need to generate a JWT token he
 const router = express.Router();
 
 // Define the /token endpoint for token exchange
-router.post('/', (req, res) => {
+router.get('/', (req, res) => {
   const { authorizationCode } = req.body;  // Extract the authorization code from the request body
   
   if (!authorizationCode) {
