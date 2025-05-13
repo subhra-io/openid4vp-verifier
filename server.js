@@ -5,7 +5,7 @@ import authorizeRouter from './src/routes/authorize.js';
 import callbackRouter from './src/routes/callback.js';
 import wellKnownRoutes from './src/routes/wellKnown.js';
 import credentialsRouter from './src/routes/credentials.js';  // Import the credentials route
-import tokenRouter from './src/routes/token.js'; 
+import tokenRouter from './src/routes/token.js';
 
 dotenv.config();
 
@@ -22,12 +22,13 @@ app.use('/.well-known', wellKnownRoutes); // Well-known route
 app.use('/credentials', credentialsRouter); // Add /credentials route
 app.use('/token', tokenRouter); // Add /token route
 
-
 // Define the root route (for testing purposes)
 app.get('/', (req, res) => {
-  res.send('Welcome to the OpenID4VP Verifier!');
+res.send('Welcome to the OpenID4VP Verifier!');
 });
 
 app.listen(PORT, () => {
-  console.log(`OpenID4VP Verifier running on http://localhost:${PORT}`);
+console.log(`OpenID4VP Verifier running on http://localhost:${PORT}`);
 });
+
+export default app;
