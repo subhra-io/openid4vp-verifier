@@ -1,8 +1,11 @@
+// server.js
 import express from 'express';
 import dotenv from 'dotenv';
 import authorizeRouter from './src/routes/authorize.js';
 import callbackRouter from './src/routes/callback.js';
 import wellKnownRoutes from './src/routes/wellKnown.js';
+import credentialsRouter from './src/routes/credentials.js';  // Import the credentials route
+import tokenRouter from './src/routes/token.js'; 
 
 dotenv.config();
 
@@ -16,6 +19,9 @@ app.use(express.json());
 app.use('/authorize', authorizeRouter); // Authorization route
 app.use('/callback', callbackRouter);   // Callback route
 app.use('/.well-known', wellKnownRoutes); // Well-known route
+app.use('/credentials', credentialsRouter); // Add /credentials route
+app.use('/token', tokenRouter); // Add /token route
+
 
 // Define the root route (for testing purposes)
 app.get('/', (req, res) => {
