@@ -4,7 +4,7 @@ import { exportJWK } from 'jose';
 
 const router = express.Router();
 
-router.get('/openid-configuration', (req, res) => {
+router.post('/openid-configuration', (req, res) => {
   res.json({
     issuer: "https://verifier.example.com",
     authorization_endpoint: "https://verifier.example.com/authorize",
@@ -18,7 +18,7 @@ router.get('/openid-configuration', (req, res) => {
   });
 });
 
-router.get('/keys', async (req, res) => {
+router.post('/keys', async (req, res) => {
   const jwk = await exportJWK(publicKey);
   jwk.alg = 'RS256';
   jwk.use = 'sig';
