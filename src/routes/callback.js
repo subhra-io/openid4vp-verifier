@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
   console.log("Received VP Token:", vp_token);
   console.log("State:", state);
 
-  res.json({ message: "VP token received and logged." });
+  res.json({ message: "VP token received and logged.", vp_token, state });
 });
 
 // GET route to retrieve the VP Token and State (simulating the response)
