@@ -1,16 +1,16 @@
-// src/routes/authorize.js
-
 import express from 'express';
 import { generateAuthRequest } from '../utils/generateAuthRequest.js';
 
 const router = express.Router();
 
+// Define GET handler separately, outside of POST handler
+router.get('/', (req, res) => {
+  res.send('GET /authorize route is working. Use POST to generate JWT.');
+});
+
+// Define POST handler
 router.post('/', (req, res) => {
   console.log("Received POST /authorize request with body:", req.body);
-
-  router.get('/', (req, res) => {
-    res.send('GET /authorize route is working. Use POST to generate JWT.');
-  });
 
   const { selectedFields } = req.body;
   if (!Array.isArray(selectedFields)) {
@@ -28,4 +28,4 @@ router.post('/', (req, res) => {
   }
 });
 
-export default router; 
+export default router;
