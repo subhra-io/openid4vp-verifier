@@ -8,6 +8,10 @@ const router = express.Router();
 router.post('/', (req, res) => {
   console.log("Received POST /authorize request with body:", req.body);
 
+  router.get('/', (req, res) => {
+    res.send('GET /authorize route is working. Use POST to generate JWT.');
+  });
+
   const { selectedFields } = req.body;
   if (!Array.isArray(selectedFields)) {
     console.log("Invalid selectedFields, must be array");
