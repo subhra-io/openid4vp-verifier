@@ -8,8 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
  * @returns {string} - Signed JWT
  */
 export function generateAuthRequest(selectedFields = []) {
-  const now = Math.floor(Date.now() / 1000);
-
+  // Define valid field names to filter the input fields
   const validFieldMappings = new Set([
     "CredentialIssuingDate", "EnrolmentDate", "EnrolmentNumber", "IsNRI", "ResidentImage",
     "ResidentName", "LocalResidentName", "AgeAbove18", "AgeAbove50", "AgeAbove60",
@@ -21,7 +20,7 @@ export function generateAuthRequest(selectedFields = []) {
     "MaskedUID", "Vid"
   ]);
 
-  // Validate selected fields
+  // Filter and map selectedFields to the constraints fields format
   const fields = selectedFields
     .filter(field => validFieldMappings.has(field))
     .map(field => ({
@@ -31,7 +30,7 @@ export function generateAuthRequest(selectedFields = []) {
       }
     }));
 
-  // Always include ID (Aadhaar Number)
+  // Always include Aadhaar ID as a required field with pattern validation
   fields.unshift({
     path: ["$.credentialSubject.id"],
     filter: {
@@ -41,6 +40,10 @@ export function generateAuthRequest(selectedFields = []) {
   });
 
   const payload = {
+    // Optional standard claims — add if needed
+    iss: "https://verifier.example.com",       // issuer
+    aud: "wallet.example",                      // audience
+
     client_id: "https://verifier.example.com",
     response_type: "vp_token",
     scope: "openid vp_token",
@@ -60,6 +63,7 @@ export function generateAuthRequest(selectedFields = []) {
     }
   };
 
+  // Sign and return JWT using RS256 algorithm and including header with key id
   return jwt.sign(payload, privateKey, {
     algorithm: 'RS256',
     header: {
@@ -69,5 +73,3 @@ export function generateAuthRequest(selectedFields = []) {
     }
   });
 }
-
- 
