@@ -1,3 +1,5 @@
+// src/routes/authorize.js
+
 import express from 'express';
 import { generateAuthRequest } from '../utils/generateAuthRequest.js';
 
@@ -22,4 +24,4 @@ router.post('/', (req, res) => {
   }
 });
 
-
+export default router; 
