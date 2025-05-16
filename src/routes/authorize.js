@@ -1,5 +1,5 @@
 import express from 'express';
-import { generateAuthRequest } from './generateAuthRequest.js';
+import { generateAuthRequest } from '../utils/generateAuthRequest.js';
 
 const router = express.Router();
 
