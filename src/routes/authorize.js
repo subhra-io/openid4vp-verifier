@@ -3,7 +3,7 @@ import { generateAuthRequest } from '../utils/generateAuthRequest.js';
 
 const router = express.Router();
 
-router.post('/auth-request', (req, res) => {
+router.post('/', (req, res) => {
   const { selectedFields } = req.body;
 
   if (!Array.isArray(selectedFields)) {
