@@ -4,11 +4,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Build and sign JWT for OpenID4VP presentation request.
- * @param {string[]} selectedFields - fields like ['ResidentName', 'Dob', 'Mobile']
+ * @param {string[]} selectedFields - e.g., ['ResidentName', 'Dob', 'Mobile']
+ * @param {"app" | "cross"} flowType - "app" for app-to-app device flow, "cross" for cross-device flow
+ * @param {string} identifier - app ID for "app" flow or domain name for "cross" flow
  * @returns {string} - Signed JWT
  */
-export function generateAuthRequest(selectedFields = []) {
-  // Define valid field names to filter the input fields
+export function generateAuthRequest(selectedFields = [], flowType = "app", identifier = "https://verifier.example.com") {
   const validFieldMappings = new Set([
     "CredentialIssuingDate", "EnrolmentDate", "EnrolmentNumber", "IsNRI", "ResidentImage",
     "ResidentName", "LocalResidentName", "AgeAbove18", "AgeAbove50", "AgeAbove60",
@@ -20,7 +21,6 @@ export function generateAuthRequest(selectedFields = []) {
     "MaskedUID", "Vid"
   ]);
 
-  // Filter and map selectedFields to the constraints fields format
   const fields = selectedFields
     .filter(field => validFieldMappings.has(field))
     .map(field => ({
@@ -30,7 +30,6 @@ export function generateAuthRequest(selectedFields = []) {
       }
     }));
 
-  // Always include Aadhaar ID as a required field with pattern validation
   fields.unshift({
     path: ["$.credentialSubject.id"],
     filter: {
@@ -39,12 +38,12 @@ export function generateAuthRequest(selectedFields = []) {
     }
   });
 
-  const payload = {
-    // Optional standard claims — add if needed
-    iss: "https://verifier.example.com",       // issuer
-    aud: "wallet.example",                      // audience
+  const clientId = flowType === "app" ? identifier : `https://${identifier}`;
 
-    client_id: "https://verifier.example.com",
+  const payload = {
+    iss: "https://verifier.example.com",
+    aud: "wallet.example",
+    client_id: clientId,
     response_type: "vp_token",
     scope: "openid vp_token",
     redirect_uri: "walletapp://callback",
@@ -63,7 +62,6 @@ export function generateAuthRequest(selectedFields = []) {
     }
   };
 
-  // Sign and return JWT using RS256 algorithm and including header with key id
   return jwt.sign(payload, privateKey, {
     algorithm: 'RS256',
     header: {
